@@ -13,18 +13,21 @@ def getComputerStatus(resultDict):
         counts = "CPU物理核心数：" + str(psutil.cpu_count(logical=False))
         CPUStatus = psutil.cpu_percent(interval=1, percpu=False)
         cpuStatus = "CPU使用率：" + str(CPUStatus) + "%"
+        memoryPercent = "内存使用率：" + str(psutil.virtual_memory().percent) + "%"
         resultDict['实时网速'] = netStatus
         resultDict['CPU物理核心数'] = counts
         resultDict['CPU使用率'] = cpuStatus
+        resultDict['内存使用率'] = memoryPercent
 
 def updateWin():
     root.children['netStatus'].config(text=resultDict['实时网速'])
     root.children['cpuCounts'].config(text=resultDict['CPU物理核心数'])
     root.children['cpuStatus'].config(text=resultDict['CPU使用率'])
+    root.children['memoryStatus'].config(text=resultDict['内存使用率'])
     root.after(10, updateWin)
 
 if __name__ == '__main__':
-    resultDict = {'实时网速': 'None', 'CPU物理核心数': 'None', 'CPU使用率': 'None'}
+    resultDict = {'实时网速': 'None', 'CPU物理核心数': 'None', 'CPU使用率': 'None', '内存使用率': 'None'}
     p = threading.Thread(target=getComputerStatus, args=(resultDict, ))
     p.start()
 
@@ -39,7 +42,8 @@ if __name__ == '__main__':
     label1 = tk.Label(name='netStatus', font=('Hack', 20, 'bold'), bg='#303030', fg='white').pack()
     label2 = tk.Label(name='cpuCounts', font=('Hack', 20, 'bold'), bg='#303030', fg='white').pack()
     label3 = tk.Label(name='cpuStatus', font=('Hack', 20, 'bold'), bg='#303030', fg='white').pack()
-    label4 = tk.Label(name='imBobby', font=('Hack', 20, 'bold'), bg='#303030', fg='white', text="===imBobby的小工具===").pack()
+    label4 = tk.Label(name='memoryStatus', font=('Hack', 20, 'bold'), bg='#303030', fg='white').pack()
+    label5 = tk.Label(name='imBobby', font=('Hack', 20, 'bold'), bg='#303030', fg='white', text="===imBobby的小工具===").pack()
     root.after(10, updateWin)
 
     root.mainloop()
